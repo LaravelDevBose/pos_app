@@ -1,0 +1,62 @@
+<ion-menu side="start" menuId="custom" contentId="main" class="my-custom-menu">
+    <ion-header>
+        <ion-toolbar color="tertiary">
+            <ion-title>Category List</ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-list *ngIf="data.categoryList">
+            <ion-item
+                *ngFor="let category of data.categoryList"
+            >
+                <ion-grid>
+                    <ion-row>
+                        <ion-col size="12" class="main-category">
+                                <!--have children category-->
+                                <ion-item
+                                        lines="none"
+                                        (click)="expandCategory(category.category_id)"
+                                        *ngIf="category.children && category.children.length >0"
+                                >
+                                    <ion-thumbnail slot="start" *ngIf="category.img">
+                                        <img [src]="category.img">
+                                    </ion-thumbnail>
+                                    <ion-label>{{ category.category_name }}</ion-label>
+                                    <ion-icon name="chevron-forward" slot="end" *ngIf="category.category_id !== expandCatId"></ion-icon>
+                                    <ion-icon name="chevron-down" slot="end" *ngIf="category.category_id === expandCatId"></ion-icon>
+                                </ion-item>
+
+                            <ion-menu-toggle *ngIf="!category.children" auto-hide="true">
+                                <!--if have no children category-->
+                                <ion-item
+                                        lines="none"
+                                        *ngIf="!category.children"
+                                        [routerLink]="['/sr/products']"
+                                        [queryParams]="{catId: category.category_id}"
+                                >
+                                    <ion-thumbnail slot="start" *ngIf="category.img">
+                                        <img [src]="category.img">
+                                    </ion-thumbnail>
+                                    <ion-label>{{ category.category_name }}</ion-label>
+                                </ion-item>
+                            </ion-menu-toggle>
+                        </ion-col>
+
+                        <ion-col size="12" *ngIf="category.children && category.children.length > 0" class="sub-category">
+                            <ion-menu-toggle auto-hide="true">
+                                <app-menu-component [expanded]="category.category_id === expandCatId" expandHeight="250px">
+                                    <ion-item *ngFor="let child of category.children" [routerLink]="['/sr/products']" [queryParams]="{catId: child.category_id}">
+                                        <ion-thumbnail slot="start" *ngIf="child.img">
+                                            <img [src]="child.img">
+                                        </ion-thumbnail>
+                                        <ion-label>{{ child.category_name }}</ion-label>
+                                    </ion-item>
+                                </app-menu-component>
+                            </ion-menu-toggle>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-menu>

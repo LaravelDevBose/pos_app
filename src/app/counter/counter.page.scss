@@ -1,0 +1,124 @@
+ion-header{
+    ion-toolbar{
+        ion-item{
+            ion-title{
+                font-size: 17px;
+                text-decoration: underline;
+                padding-inline-start: 5px;
+            }
+            ion-icon{
+                margin-inline-end: 5px;
+                color: #FFFFFF;
+            }
+            div{
+                padding-left: 5px;
+                color: #fff;
+                h3{
+                    margin: 0;
+                    font-size: 16px;
+                }
+                ion-label{
+                    font-size: 14px;
+                }
+            }
+        }
+
+
+    }
+}
+
+ion-content{
+    ion-grid{
+        ion-row{
+            ion-col{
+
+                ion-list{
+                    &:nth-child(1){
+                        padding: 0;
+                        margin-bottom: .5rem;
+                        ion-item{
+                            --padding-start: 0;
+                            --inner-padding-end: 0px;
+                            ion-row{
+                                width: 100%;
+                                ion-col{
+                                    padding: 0;
+                                    ion-skeleton-text{
+                                        height: 20px;
+                                        width: 100%;
+                                    }
+
+                                    &:nth-child(1){
+                                        b{
+                                            position: relative;
+                                            top: 30%;
+                                            margin-right: 5px;
+                                            font-size: 14px;
+                                            margin-left: 5px;
+                                            color: var(--theam-color);
+                                        }
+
+                                    }
+                                    &:nth-child(2){
+                                        h6{
+                                            margin: 0;
+                                            font-size: 15px;
+                                            font-weight: 600;
+                                        }
+                                        small{
+                                            font-size: 11px;
+                                            font-weight: 500;
+                                        }
+                                    }
+                                    &:nth-child(3){
+                                        padding-right: 5px;
+                                        p{
+                                            text-align: right;
+                                            margin: 0;
+                                            position: relative;
+                                            top: 30%;
+                                            font-size: 13px;
+                                            small{
+                                                font-size: 10px;
+                                                font-weight: 600;
+                                            }
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .summery{
+                ion-list{
+                    ion-item{
+                        --inner-padding-end: 5px;
+                        --padding-start: 5px;
+                        ion-skeleton-text{
+                            width: 100%;
+                            height: 30px;
+                        }
+                        ion-label{
+                            margin-left: 5px;
+                            margin-right: 5px;
+                            small{
+                                font-size: 10px;
+                                font-weight: 600;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .btn-group{
+            ion-col{
+                ion-button{
+                    ion-icon{
+                        margin-left: 7px;
+                    }
+                }
+            }
+        }
+    }
+}

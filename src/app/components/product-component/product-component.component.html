@@ -1,0 +1,34 @@
+<ion-card  class="product" >
+    <ion-skeleton-text *ngIf="product === 1" animated class="product-img"></ion-skeleton-text>
+    <div>
+        <img *ngIf="product !== 1"  src="assets/img/product-1.jpg" />
+    </div>
+
+    <ion-card-header>
+        <ion-skeleton-text animated *ngIf="product === 1"></ion-skeleton-text>
+        <ion-card-title *ngIf="product !== 1">{{ product.product_name}}</ion-card-title>
+        <ion-label *ngIf="product !== 1" >Size: {{ product.product_size }}</ion-label>
+    </ion-card-header>
+
+    <ion-card-content>
+        <ion-row>
+            <ion-col size="12">
+                <ion-label class="ProductPrice">
+                    <ion-label class="mrp" *ngIf="product === 1" >
+                        <ion-skeleton-text animated  ></ion-skeleton-text>
+                    </ion-label>
+                    <ion-label class="mrp" *ngIf="product.shop_price">
+                        <span>MRP:</span> {{ product.shop_price }}
+                    </ion-label>
+
+                    <ion-label class="point" *ngIf="product === 1" >
+                        <ion-skeleton-text animated *ngIf="product === 1"></ion-skeleton-text>
+                    </ion-label>
+                    <ion-label class="point" *ngIf="product !== 1">
+                        <span>Point:</span> {{ (product.shop_price - product.wholesale_price) / .5}}
+                    </ion-label>
+                </ion-label>
+            </ion-col>
+        </ion-row>
+    </ion-card-content>
+</ion-card>

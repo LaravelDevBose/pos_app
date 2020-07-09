@@ -1,0 +1,56 @@
+<ion-content>
+    <ion-card>
+        <ion-card-header>
+            <ion-item lines="none">
+                <ion-button buttonType="button" class="btn-purple">
+                    <ion-icon name="add-circle"></ion-icon>
+                </ion-button>
+                <ion-card-title>Select Customer</ion-card-title>
+                <ion-icon name="close" mode="md" slot="end" (click)="closeModal()"></ion-icon>
+            </ion-item>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col size="12">
+                        <ion-searchbar
+                                class="searchbar"
+                                debounce="500"
+                                placeholder="Search by name or phone number"
+                                (ionChange)="searchProducts($event)"
+                                (ionCancel)="cancelSearch()"
+                                (ionClear)="cancelSearch()"
+                        ></ion-searchbar>
+                    </ion-col>
+                    <ion-col size="12" *ngIf="customers" [@listAnimation]="customers.length">
+                        <ion-list lines="none" >
+                            <ion-item *ngFor="let customer of customers">
+                                <div class="skeleton" *ngIf="customer === 1">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+                                <div
+                                        class="customer"
+                                        *ngIf="customer !==1"
+                                        (click)="selectCustomer(customer)"
+                                >
+                                    <h3>{{ customer.username}}</h3>
+                                    <ion-label>{{ customer.name }}</ion-label>
+                                </div>
+                            </ion-item>
+                            <ion-item>
+
+                            </ion-item>
+                        </ion-list>
+                        <ion-infinite-scroll threshold="100px" (ionInfinite)="loadCustomerData($event)">
+                            <ion-infinite-scroll-content
+                                    loadingSpinner="bubbles"
+                                    loadingText="Loading more data...">
+                            </ion-infinite-scroll-content>
+                        </ion-infinite-scroll>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

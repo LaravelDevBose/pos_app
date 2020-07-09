@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-item>
+            <ion-menu-button slot="start"></ion-menu-button>
+            <ion-title>Products List</ion-title>
+        </ion-item>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col size="12" class="ion-no-margin ion-no-padding">
+                <ion-searchbar
+                        debounce="500"
+                        placeholder="Search by product name"
+                        (ionChange)="searchProducts($event)"
+                        (ionCancel)="cancelSearch()"
+                        (ionClear)="cancelSearch()"
+                        (ionInput)="searchProducts($event)"
+                ></ion-searchbar>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="products" [@listAnimation]="products.length" class="product-list">
+            <ion-col size="6" *ngFor="let productEl of products">
+                <app-product-component [product]="productEl" (click)="openModal(productEl)"></app-product-component>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="products.length <= 0">
+            <ion-col size="12" class="ion-text-center">
+                <h1>No Product Found.</h1>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>

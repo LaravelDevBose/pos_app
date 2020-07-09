@@ -1,0 +1,8 @@
+{
+  "name": "paikarimarket",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

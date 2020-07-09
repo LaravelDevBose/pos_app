@@ -1,0 +1,47 @@
+ion-menu{
+    ion-header{
+
+    }
+
+    ion-content{
+        ion-list{
+            ion-item{
+                --min-height: 48px;
+                --padding-start: 0px;
+                --inner-padding-end: 0px;
+                ion-grid{
+                    padding: 0;
+                    ion-row{
+                        .main-category{
+                            padding: 0;
+                            width: 100%!important;
+                            ion-item{
+                                --padding-start: 7px;
+                                ion-thumbnail{
+                                    width: 38px;
+                                    height: 38px;
+                                    margin: 0;
+                                }
+                                ion-label{
+                                    margin-left: 5px;
+                                }
+                            }
+                        }
+                        .sub-category{
+                            padding: 0;
+                            width: 100%!important;
+                            ion-menu-toggle{
+                                ion-item{
+                                    --padding-start: 2rem;
+                                    &:last-child{
+                                        --border-style: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

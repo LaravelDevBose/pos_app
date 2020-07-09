@@ -1,0 +1,71 @@
+ion-content {
+    --background: transparent!important;
+}
+ion-card{
+    background: #FFFFFF;
+    border-radius: 10px 10px 0 0;
+    max-height: 20rem;
+    position: fixed;
+    bottom: 0!important;
+    margin: 0;
+    width: 100%;
+
+    ion-card-header{
+        padding: 3px;
+        box-shadow: 0 .15rem 0.5rem 0 rgba(143, 39, 143, 0.73) !important;
+        ion-card-title{
+            font-size: 20px;
+            margin: 0 auto;
+        }
+    }
+    ion-card-content{
+        padding: 0;
+        ion-grid{
+            padding: 0;
+            ion-row{
+                ion-col{
+                    .searchbar{
+                        margin-bottom: 0;
+                        padding: .3rem;
+                    }
+                    ion-list{
+                        padding: 0;
+                        max-height: 15rem;
+                        overflow-y: scroll;
+                        ion-item{
+                            --padding-start: 0;
+                            --inner-padding-end: 0;
+                            margin-bottom: 5px;
+                            border-radius: 5px;
+                            .skeleton{
+                                background: #FFFFFF;
+                                width: 100%!important;
+                                display: block;
+                                ion-skeleton-text{
+                                    width: 100%;
+                                    display: block;
+                                    height: 15px;
+                                }
+                            }
+                            .customer{
+                                width: 100%!important;
+                                display: block;
+                                background: #ececec;
+                                box-shadow: 0 .25rem 0.75rem 0 #f5f5f5 !important;
+                                padding-left: 5px;
+                                h3{
+                                    font-size: 18px;
+                                    font-weight: bold;
+                                    color: var(--theam-color);
+                                }
+                                ion-label{
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

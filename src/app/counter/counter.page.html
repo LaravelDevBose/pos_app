@@ -1,0 +1,106 @@
+<ion-header>
+    <ion-toolbar (click)="onAddCustomer()">
+        <ion-item *ngIf="!selectedCustomer" lines="none">
+            <ion-icon md="people" ios="people-outline" slot="start"></ion-icon>
+            <ion-title >Add Customer</ion-title>
+        </ion-item>
+
+        <ion-item *ngIf="selectedCustomer">
+            <ion-icon md="person-circle" ios="person-circle-outline" slot="start"></ion-icon>
+            <div>
+                <h3>{{ selectedCustomer.name }}</h3>
+                <ion-label>{{ selectedCustomer.username}}</ion-label>
+            </div>
+        </ion-item>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid *ngIf="cartItems.length > 0">
+        <ion-row>
+            <ion-col size="12" class="ion-no-padding">
+                <ion-list >
+                    <ion-item *ngFor="let item of cartItems">
+                        <ion-row *ngIf="item == 1">
+                            <ion-col size="1.5">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                            <ion-col size="7.5">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                            <ion-col size="3">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row *ngIf="item !== 1">
+                            <ion-col size="1.5">
+                                <b>{{ item.qty }}X</b>
+                            </ion-col>
+                            <ion-col size="7.5">
+                                <h6>{{ item.product_name }}</h6>
+                                <!--<small>Point: 100, weight: 5kg</small>-->
+                            </ion-col>
+                            <ion-col size="3">
+                                <p>{{ item.sub_total }} <small>Tk</small></p>
+                            </ion-col>
+                        </ion-row>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="ion-no-padding summery">
+                <ion-list lines="none" class="ion-no-padding">
+                    <ion-item *ngIf="isLoading">
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                    </ion-item>
+
+                    <ion-item *ngIf="!isLoading && cartItems">
+                        <ion-label>Subtotal</ion-label>
+                        <ion-label class="ion-text-right">{{ cartTotal }}<small>tk</small></ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+        <ion-row class="btn-group">
+            <ion-col size="6">
+                <ion-button
+                        expand="block"
+                        fill="solid"
+                        color="secondary"
+                        strong="true"
+                        (click)="clearCart()"
+                >Clear</ion-button>
+            </ion-col>
+            <ion-col size="6">
+                <ion-button
+                        expand="block"
+                        fill="solid"
+                        strong="true"
+                        class="btn-purple"
+                        (click)="sale()"
+                        [disabled]="!selectedCustomer"
+                >Sale
+                    <ion-icon name="cart"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="cartItems.length <= 0">
+        <ion-row>
+            <ion-col size="12" class="ion-text-center">
+                <h1>No item found in Cart.</h1>
+            </ion-col>
+            <ion-col size="8" offset="2" >
+                <ion-button
+                        expand="block"
+                        fill="solid"
+                        strong="true"
+                        class="btn-purple"
+                        [routerLink]="['/sr/products']"
+                        routerDirection="back"
+                >Add Product
+                    <ion-icon name="cart"></ion-icon>
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

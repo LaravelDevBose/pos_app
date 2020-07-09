@@ -1,0 +1,151 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+
+.ion-invalid.ion-touched ion-icon{
+    color: var(--ion-color-danger)!important;
+    //background-color: var(--ion-color-danger)!important;
+}
+.ion-invalid.ion-touched {
+    margin-bottom: 2px;
+    //background-color: var(--ion-color-danger)!important;
+}
+.error-feedback{
+    font-size: 13px!important;
+    margin-bottom: 4px!important;
+    margin-left: 5px!important;
+}
+
+button[disabled]{
+    opacity: .4!important;
+}
+
+.my-loader-class{
+    --backdrop-opacity: .5;
+    --spinner-color: var(--theam-color);
+}
+ion-content{
+    --background: #e6e6e6!important;
+}
+
+.ion-page{
+    --background: #e6e6e6!important;
+}
+
+ion-header{
+    ion-toolbar{
+        --background: var(--theam-color);
+        --min-height: 42px;
+        ion-title{
+            --color: #ffffff;
+            margin: 0 auto;
+        }
+
+        ion-item{
+            --background: var(--theam-color);
+            --min-height: 30px;
+            ion-avatar{
+                width: 32px;
+                height: 32px;
+                margin-inline-end: 0;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            ion-buttons{
+                margin-inline-end: 0;
+                --color: #fff;
+                ion-back-button{
+                    --ion-color-base: #000;
+                    height: 20px;
+                    width: 20px;
+                    --border-radius: 0;
+                }
+            }
+            ion-menu-button{
+                --color: #fff;
+                --color-focused: var(--theam-2-color);
+                --color-hover: var(--theam-2-color);
+            }
+            ion-title{
+                --color: #ffffff;
+            }
+            ion-icon{
+                margin-inline-start: 0;
+                color: #ffffff;
+                height: 28px;
+                width: 28px;
+            }
+        }
+
+    }
+}
+.btn-purple{
+    --background: var(--theam-color);
+    --background-focused: var(--theam-color);
+    --background-hover: var(--theam-color);
+    --box-shadow: 0 .4rem 1rem rgba(143, 39, 143, 0.73) !important;
+}
+.product-cart, .select-customer-modal{
+    --background: transparent;
+    --backdrop-opacity: .8
+}
+.warning-toast{
+    --background: rgba(233, 175, 0, 0.88);
+    --box-shadow: rgba(249, 235, 181, 0.91);
+    --color: #fff;
+}
+.success-toast{
+    --background: rgba(36, 249, 29, 0.88);
+    --box-shadow: rgba(164, 244, 133, 0.91);
+    --color: #fff;
+}
+
+ion-searchbar{
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: .5rem;
+}
+
+.searchbar-input-container{
+    .searchbar-input{
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 30px;
+        padding-inline-start: 37px;
+    }
+    .searchbar-search-icon {
+        left: 7px;
+        top: 8px;
+        width: 20px;
+        height: 20px;
+    }
+
+}

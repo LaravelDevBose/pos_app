@@ -1,0 +1,91 @@
+<ion-content>
+    <ion-grid class="header-section">
+        <ion-row>
+            <ion-col size="12" class="logo-section">
+                <div class="logo">
+                    <img src="assets/img/logo.png" alt="">
+                </div>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid  class="login-section">
+        <form action="" #loginFrom="ngForm" (ngSubmit)="login(loginFrom)">
+            <ion-row>
+                <ion-col size="12">
+
+                    <ion-list>
+                        <ion-list-header>
+                            <h3>Login Your Account</h3>
+                        </ion-list-header>
+                        <ion-item>
+                            <ion-icon md="call" ios="call-outline" slot="start"></ion-icon>
+                            <ion-input
+                                type="tel"
+                                autocomplete="off"
+                                autofocus="true"
+                                inputmode="tel"
+                                maxlength="11"
+                                placeholder="01XXX-XXXXXX"
+                                ngModel
+                                name="username"
+                                #username="ngModel"
+                                required="true"
+                            ></ion-input>
+                        </ion-item>
+                        <p
+                                *ngIf="!username.valid && username.touched"
+                                class="error-feedback"
+                        >
+                            <ion-label color="danger">
+                                Should enter your email address
+                            </ion-label>
+                        </p>
+                        <ion-item>
+                            <ion-icon md="lock-closed" ios="lock-closed-outline" slot="start"></ion-icon>
+                            <ion-input
+                                    [type]="fieldType"
+                                    min="6"
+                                    minlength="6"
+                                    ngModel
+                                    name="password"
+                                    placeholder="xxxxxx"
+                                    required="true"
+                                    #passCtrl="ngModel"
+                            ></ion-input>
+                            <ion-icon
+                                    md="eye"
+                                    ios="eye-outline"
+                                    slot="end"
+                                    *ngIf="fieldType== 'text'"
+                                    (click)="fieldType = 'password'"
+                            ></ion-icon>
+                            <ion-icon
+                                    md="eye-off"
+                                    ios="eye-off-outline"
+                                    slot="end"
+                                    *ngIf="fieldType=='password'"
+                                    (click)="fieldType = 'text'"
+                            ></ion-icon>
+                        </ion-item>
+                        <p
+                                *ngIf="!passCtrl.valid && passCtrl.touched"
+                                class="error-feedback"
+                        >
+                            <ion-label color="danger">
+                                Should at least 6 characters long.
+                            </ion-label>
+                        </p>
+                    </ion-list>
+                </ion-col>
+                <ion-col size="8" offset="2">
+                    <ion-button
+                            expand="block"
+                            fill="solid"
+                            strong="true"
+                            type="submit"
+                    >Success</ion-button>
+                </ion-col>
+            </ion-row>
+        </form>
+    </ion-grid>
+</ion-content>

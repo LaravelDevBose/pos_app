@@ -1,0 +1,47 @@
+ion-content{
+    ion-grid{
+        padding: 0;
+        ion-row{
+            ion-col{
+                padding: 0;
+                h1{
+                    color: var(--theam-color);
+                    font-weight: bold;
+                    margin-top: 50%;
+                }
+            }
+        }
+        .product-list{
+            position: relative;
+            top: 2.4rem;
+        }
+    }
+}
+
+ion-searchbar{
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: .5rem;
+    position: fixed;
+    z-index: 99;
+}
+
+.searchbar-input-container{
+    .searchbar-input{
+        padding-top: 3px;
+        padding-bottom: 3px;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 30px;
+        padding-inline-start: 37px;
+    }
+    .searchbar-search-icon {
+        left: 7px;
+        top: 8px;
+        width: 20px;
+        height: 20px;
+    }
+
+}
