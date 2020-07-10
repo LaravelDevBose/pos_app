@@ -20,42 +20,40 @@ export class AuthService {
 
     }
 
-    login(formData: { email: string, password: string }) {
+    login(formData: { username: string, password: string }) {
         const credentials = {
             grant_type: 'password',
             client_id: 2,
             client_secret: this.config.CLIENT_SECRET,
-            username: formData.email,
+            username: formData.username,
             password: formData.password,
         };
 
-        return this.http.post<any>(this.config.APP_URL + 'oauth/token', credentials)
+        return this.http.post<any>(this.config.API_URL + 'api/oauth/login', credentials)
             .pipe(tap(response => {
-                if (response.hasOwnProperty('access_token')) {
-                    const accessToken = response.token_type + ' ' + response.access_token;
+                if (response.code == this.config.HTTP_OK && response.data.hasOwnProperty('access_token')) {
+                    const accessToken = response.data.token_type + ' ' + response.data.access_token;
                     this.database.setDataToStorage(this.database.access_token_table, accessToken);
+                    this.database.setDataToStorage(this.database.TOKEN_TABLE, response.data.token_id);
+                    this.database.setDataToStorage(this.database.USER_TABLE, response.data.user);
                     this.authUserBehavior.next(1);
                 }
             }));
     }
 
-    logout() {
-        let access_token = "";
-            this.database.getDataFromStorage(this.database.access_token_table)
-                .then(accessToken => {
-                    access_token = accessToken;
-                });
+    logout(access_token: string, tokenId: string) {
+
         const headers = new HttpHeaders({
             'Content-Type': 'application/json',
             Authorization: access_token,
         });
-        return this.http.get<any>(this.config.APP_URL + 'logout', {headers})
+        return this.http.post<any>(this.config.API_URL + 'api/oauth/logout', {token_id: tokenId},{headers})
             .pipe(tap(response => {
-                if (this.config.HTTP_OK === response.status) {
-                    this.database.setDataToStorage(this.database, "");
-                    this.authUserBehavior.next(0);
-                } else if (response.status === this.config.HTTP_UNAUTHORIZED) {
-                    this.database.clearDataStorage(this.database.access_token_table);
+                if (this.config.HTTP_OK === response.code || response.code === this.config.HTTP_BAD_REQUEST || response.code === this.config.HTTP_UNAUTHORIZED) {
+                    this.database.setDataToStorage(this.database.USER_TABLE, "");
+                    this.database.setDataToStorage(this.database.CART_TABLE, []);
+                    this.database.setDataToStorage(this.database.TOKEN_TABLE, "");
+                    this.database.setDataToStorage(this.database.access_token_table, "");
                     this.authUserBehavior.next(0);
                 }
             }));
@@ -66,7 +64,7 @@ export class AuthService {
             'Content-Type': 'application/json',
             Authorization: localStorage.getItem('access_token')
         });
-        this.http.get<any>(this.config.APP_URL + 'user', {headers})
+        this.http.get<any>(this.config.API_URL + 'user', {headers})
             .subscribe(
                 (response => {
                     if (response.status === this.config.HTTP_OK) {

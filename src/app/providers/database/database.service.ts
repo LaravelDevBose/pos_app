@@ -9,6 +9,8 @@ export class DatabaseService {
 
     // SQL List Table Name List
     public access_token_table = 'access_token';
+    public TOKEN_TABLE = '_token';
+    public USER_TABLE = '_user'
     public CART_TABLE = 'carts';
 
     constructor(

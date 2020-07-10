@@ -5,8 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class ConfigService {
 
-  public APP_URL = '';
-  public CLIENT_SECRET = 'UFPXbTuQp4tGut4YvwzGCpwvYoejWeLVUKX0q3xu';
+  public API_URL = 'http://paikari.pc/';
+  public CLIENT_SECRET = 'WLYjq5w0BO6H36j7HjARak12kagNj9C61P2L1k3Q';
 
 
   //================================================//

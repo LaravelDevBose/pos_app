@@ -17,16 +17,26 @@ export class AlertService {
             header,
             message,
             animated: true,
-            cssClass: cssClass
+            cssClass: cssClass,
+            buttons: [
+                {
+                    text: 'OK',
+                    handler: () => {
+                        return alertEl.dismiss();
+                    }
+                }
+            ]
         });
 
         return await alertEl.present();
     }
 
-    async presentWithRoute(header: string, message: string, routeLink: string= '') {
+    async presentWithRoute(header: string, message: string, routeLink: string= '', cssClass="") {
         await this.alertCtrl.create({
             header,
             message,
+            animated: true,
+            cssClass: cssClass,
             buttons: [
                 {
                     text: 'OK',

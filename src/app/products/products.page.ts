@@ -34,16 +34,17 @@ export class ProductsPage implements OnInit {
     }
 
     ionViewWillEnter(){
-        this.loader.present('Loading...');
+
         this.database.getDataFromStorage(this.database.access_token_table)
             .then(response=>{
                 if(!response){
                     this.router.navigate(['/login']);
                 }
             })
+        this.loader.present('Loading...');
         setTimeout(()=>{
             this.loader.dismiss();
-        },1200);
+        },1000);
 
         this.route.queryParams.subscribe(params => {
             if (!params.hasOwnProperty('catId')){
