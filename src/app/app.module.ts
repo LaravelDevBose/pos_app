@@ -13,7 +13,6 @@ import {FormsModule} from '@angular/forms';
 import {CategoriesPageModule} from "./products/categories/categories.module";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {IonicStorageModule} from "@ionic/storage";
-import {DatabaseService} from "./providers/database/database.service";
 
 @NgModule({
     declarations: [AppComponent],
