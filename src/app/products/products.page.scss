@@ -1,3 +1,19 @@
+ion-header{
+    ion-toolbar{
+        ion-item{
+            --padding-start: 0;
+        }
+        ion-searchbar{
+            padding-inline-start: .8rem;
+            padding-inline-end: .8rem;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: .5rem;
+
+        }
+    }
+}
+
 ion-content{
     ion-grid{
         padding: 0;
@@ -12,21 +28,11 @@ ion-content{
             }
         }
         .product-list{
-            position: relative;
-            top: 2.4rem;
+            margin-top: .5rem;
         }
     }
 }
 
-ion-searchbar{
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: .5rem;
-    position: fixed;
-    z-index: 99;
-}
 
 .searchbar-input-container{
     .searchbar-input{

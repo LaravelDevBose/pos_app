@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {DemoDataService} from "../providers/demo-data/demo-data.service";
 import {listAnimation} from "../../_animation/animations";
 import {ModalController} from "@ionic/angular";
@@ -7,6 +7,9 @@ import {LoaderService} from "../providers/loader/loader.service";
 import {AlertService} from "../providers/alert/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DatabaseService} from "../providers/database/database.service";
+import {DataService} from "../services/data.service";
+import {Subscription} from "rxjs";
+import {ConfigService} from "../providers/config/config.service";
 
 @Component({
     selector: 'app-products',
@@ -14,18 +17,23 @@ import {DatabaseService} from "../providers/database/database.service";
     styleUrls: ['./products.page.scss'],
     animations:[listAnimation]
 })
-export class ProductsPage implements OnInit {
+export class ProductsPage implements OnInit, OnDestroy {
     public products: any[] =[1,1,1,1];
     private searchValue: String = "";
     private catId;
+    private page= 1;
+    private per_page = 12;
+    private last_page = 1;
+    private productSub: Subscription;
     constructor(
-        public data: DemoDataService,
+        public config: ConfigService,
         private modalCtrl: ModalController,
         private loader: LoaderService,
         private alert: AlertService,
         private router: Router,
         private database: DatabaseService,
         private route: ActivatedRoute,
+        private dataService: DataService
     ) {
 
     }
@@ -34,7 +42,6 @@ export class ProductsPage implements OnInit {
     }
 
     ionViewWillEnter(){
-
         this.database.getDataFromStorage(this.database.access_token_table)
             .then(response=>{
                 if(!response){
@@ -48,17 +55,44 @@ export class ProductsPage implements OnInit {
 
         this.route.queryParams.subscribe(params => {
             if (!params.hasOwnProperty('catId')){
-                this.products = this.data.products;
+                this.catId = 0;
             }else{
                 this.catId = params.catId;
-                this.products = this.data.products.filter(product=> {
-                    if(this.catWishProduct(product)){
-                        return  product;
-                    }
-                })
             }
+            this.fetchProducts();
         })
     }
+
+    fetchProducts(infiniteScroll?){
+        let url = `page=${this.page}&per_page=${this.per_page}`;
+        this.productSub = this.dataService.fetchCategoryProduct(this.catId, url)
+            .subscribe((responseData) => {
+                if (responseData.code === this.config.HTTP_OK) {
+
+                    if (this.page === 1 && responseData.hasOwnProperty('meta')) {
+                        this.last_page = responseData.meta.last_page;
+                        this.products = responseData.data;
+                    } else {
+                        this.products.push(...responseData.data);
+                    }
+                    if (infiniteScroll) {
+                        infiniteScroll.target.complete();
+                    }
+                } else if (responseData.status === this.config.HTTP_NOT_FOUND) {
+                    this.products.push([]);
+                    this.alert.present('Not Found', 'No Product Found');
+                } else {
+                    console.log(responseData.status);
+                }
+            }, (error => {
+                console.log(error);
+                this.alert.present('Ops. Sorry', 'Something Wrong.');
+                if (infiniteScroll) {
+                    infiniteScroll.target.complete();
+                }
+            }))
+    }
+
     searchProducts($event: any) {
         this.searchValue = $event.target.value;
         this.searchData();
@@ -86,17 +120,14 @@ export class ProductsPage implements OnInit {
         }
 
     }
-    loadData(event: any) {
-        setTimeout(() => {
-            this.products.push(...this.data.products);
-            this.searchData(1);
-            event.target.complete();
-            // App logic to determine if all data is loaded
-            // and disable the infinite scroll
-            if (this.products.length == 100) {
-                event.target.disabled = true;
-            }
-        }, 500);
+    loadData(infiniteScroll) {
+        this.page++;
+
+        if (this.page > this.last_page) {
+            infiniteScroll.target.disabled = true;
+        } else {
+            this.fetchProducts(infiniteScroll);
+        }
     }
 
     cancelSearch() {
@@ -125,5 +156,9 @@ export class ProductsPage implements OnInit {
         }else{
             return true;
         }
+    }
+
+    ngOnDestroy() {
+        this.productSub.unsubscribe();
     }
 }

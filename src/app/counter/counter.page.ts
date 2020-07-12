@@ -59,6 +59,7 @@ export class CounterPage implements OnInit {
     async onAddCustomer(){
         const modal = await this.modalCtrl.create({
             component: SelectCustomerComponent,
+            componentProps: {"selectedCustomer": this.selectedCustomer},
             cssClass: 'select-customer-modal',
             animated: true,
             mode: "ios"

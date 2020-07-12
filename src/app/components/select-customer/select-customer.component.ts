@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {DatabaseService} from "../../providers/database/database.service";
 import {DemoDataService} from "../../providers/demo-data/demo-data.service";
 import {listAnimation} from "../../../_animation/animations";
 import {ToastService} from "../../providers/toast/toast.service";
+import {DataService} from "../../services/data.service";
+import {Subscription} from "rxjs";
+import {ConfigService} from "../../providers/config/config.service";
 
 @Component({
     selector: 'app-select-customer',
@@ -12,41 +15,51 @@ import {ToastService} from "../../providers/toast/toast.service";
     animations:[listAnimation]
 })
 export class SelectCustomerComponent implements OnInit {
-
+    @Input('selectedCustomer') selectedCustomer: any;
     public isLoading = true;
+    public selectCus: any;
     public customers: any[] = [1,1,1,1,1];
-    private customerData: any[];;
+    private customerData: any[];
     public searchValue = "";
+    private customerSub: Subscription;
     constructor(
         private modalCtrl: ModalController,
-        public data: DemoDataService,
-        private toast: ToastService
+        public dataService: DataService,
+        private toast: ToastService,
+        private config: ConfigService
     ) { }
 
     ngOnInit() {}
 
     ionViewWillEnter(){
-        setTimeout(()=> {
-            this.isLoading = false;
-            this.customerData = this.data.customers;
-            this.customers = this.data.customers;
-            console.log(this.customers);
-        }, 1200);
+        this.selectCus = this.selectedCustomer;
+        this.customerSub = this.dataService.fetchCustomerList()
+            .subscribe(({code, data})=>{
+                this.isLoading = false;
+                if(code === this.config.HTTP_OK){
+                    this.customerData = data;
+                    this.customers = this.customerData;
+                }else{
+                    this.toast.presentToast('No Customers Found', 'warning-toast');
+                }
+            }, (error)=>{
+                console.log(error);
+                this.toast.presentToast('No Customers Found', 'warning-toast');
+            })
     }
 
     closeModal() {
-        this.modalCtrl.dismiss();
+        this.modalCtrl.dismiss(this.selectCus);
     }
 
     searchProducts($event: any) {
-        console.log($event.target.value);
         this.searchValue = $event.target.value;
         this.searchData();
     }
 
     searchData(){
         this.customers = this.customerData.filter(customer=> {
-            if (customer.username.toString().indexOf(this.searchValue) > -1 || customer.name.toLowerCase().indexOf(this.searchValue) > -1){
+            if (customer.username.toString().indexOf(this.searchValue.toLowerCase()) > -1 || customer.name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1){
                 return  customer;
             }
         });
@@ -57,20 +70,8 @@ export class SelectCustomerComponent implements OnInit {
         this.searchValue="";
     }
     selectCustomer(customer){
-        this.modalCtrl.dismiss(customer);
+        this.selectCus = customer;
+        this.modalCtrl.dismiss(this.selectCus);
         this.toast.presentToast('Customer Selected', 'success-toast');
-    }
-
-    loadCustomerData(event: any) {
-        setTimeout(() => {
-            this.customers.push(...this.customerData);
-            this.searchData();
-            event.target.complete();
-            // App logic to determine if all data is loaded
-            // and disable the infinite scroll
-            if (this.customers.length >= 50) {
-                event.target.disabled = true;
-            }
-        }, 500);
     }
 }

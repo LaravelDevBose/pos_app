@@ -1,13 +1,14 @@
 <ion-card  class="product" >
     <ion-skeleton-text *ngIf="product === 1" animated class="product-img"></ion-skeleton-text>
-    <div>
-        <img *ngIf="product !== 1"  src="assets/img/product-1.jpg" />
+    <div *ngIf="product !== 1"  >
+        <img *ngIf="product.image" [src]="product.image.path" />
+        <img *ngIf="!product.image" src="assets/img/no-image.png" />
     </div>
 
     <ion-card-header>
         <ion-skeleton-text animated *ngIf="product === 1"></ion-skeleton-text>
-        <ion-card-title *ngIf="product !== 1">{{ product.product_name}}</ion-card-title>
-        <ion-label *ngIf="product !== 1" >Size: {{ product.product_size }}</ion-label>
+        <ion-card-title *ngIf="product !== 1">{{ product.name}}</ion-card-title>
+        <ion-label *ngIf="product !== 1" >Size: {{ product.size }}</ion-label>
     </ion-card-header>
 
     <ion-card-content>

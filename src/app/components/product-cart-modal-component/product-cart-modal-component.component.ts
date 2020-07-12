@@ -40,7 +40,6 @@ export class ProductCartModalComponent implements OnInit {
         setTimeout(()=> {
             this.isLoading = false;
             if (cartProduct){
-                console.log(cartProduct);
                 this.cartInfo.box_qty = cartProduct.box_qty;
                 this.cartInfo.qty = cartProduct.qty
                 this.cartInfo.sub_total = cartProduct.sub_total;
@@ -100,8 +99,8 @@ export class ProductCartModalComponent implements OnInit {
 
     productAddToCart() {
         /*this.loader.present('Please Wait...');*/
-        this.cartInfo.product_id = this.product.product_id;
-        this.cartInfo.product_name = this.product.product_name;
+        this.cartInfo.product_id = this.product.id;
+        this.cartInfo.product_name = this.product.name;
         this.cartInfo.price = this.product.shop_price;
         this.cartInfo.sub_total = this.product.shop_price * this.cartInfo.qty;
 

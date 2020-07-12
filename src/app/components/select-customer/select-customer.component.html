@@ -2,9 +2,9 @@
     <ion-card>
         <ion-card-header>
             <ion-item lines="none">
-                <ion-button buttonType="button" class="btn-purple">
+                <!--<ion-button buttonType="button" class="btn-purple">
                     <ion-icon name="add-circle"></ion-icon>
-                </ion-button>
+                </ion-button>-->
                 <ion-card-title>Select Customer</ion-card-title>
                 <ion-icon name="close" mode="md" slot="end" (click)="closeModal()"></ion-icon>
             </ion-item>
@@ -33,9 +33,11 @@
                                         class="customer"
                                         *ngIf="customer !==1"
                                         (click)="selectCustomer(customer)"
+                                        [ngClass]="selectCus.id === customer.id ? 'bg-lightGreen': ''"
                                 >
                                     <h3>{{ customer.username}}</h3>
-                                    <ion-label>{{ customer.name }}</ion-label>
+                                    <ion-label>{{ customer.name }} <ion-icon name="checkmark-done" *ngIf="selectCus.id === customer.id"></ion-icon></ion-label>
+
                                 </div>
                             </ion-item>
                             <ion-item>

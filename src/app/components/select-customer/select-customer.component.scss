@@ -60,6 +60,15 @@ ion-card{
                                 }
                                 ion-label{
                                     display: block;
+                                    ion-icon{
+                                        float: right;
+                                        font-size: 32px;
+                                        font-weight: bold;
+                                        color: #00983d;
+                                        position: relative;
+                                        top: -5px;
+                                        right: 10px;
+                                    }
                                 }
                             }
                         }
@@ -68,4 +77,8 @@ ion-card{
             }
         }
     }
+}
+
+.bg-lightGreen{
+    background: #afeaaf8f!important;
 }
