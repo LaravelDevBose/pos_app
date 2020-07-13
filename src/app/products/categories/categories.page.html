@@ -30,8 +30,7 @@
                                 <!--if have no children category-->
                                 <ion-item
                                         lines="none"
-                                        [routerLink]="['/sr/products']"
-                                        [queryParams]="{catId: category.id}"
+                                        (click)="selectCategory(category.id)"
                                 >
                                     <ion-thumbnail slot="start" *ngIf="category.img">
                                         <img [src]="category.img">

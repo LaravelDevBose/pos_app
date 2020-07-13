@@ -10,6 +10,7 @@ import {DatabaseService} from "../providers/database/database.service";
 import {DataService} from "../services/data.service";
 import {Subscription} from "rxjs";
 import {ConfigService} from "../providers/config/config.service";
+import {AuthService} from "../services/auth.service";
 
 @Component({
     selector: 'app-products',
@@ -19,6 +20,7 @@ import {ConfigService} from "../providers/config/config.service";
 })
 export class ProductsPage implements OnInit, OnDestroy {
     public products: any[] =[1,1,1,1];
+    public productsData: any[] =[];
     private searchValue: String = "";
     private catId;
     private page= 1;
@@ -33,34 +35,36 @@ export class ProductsPage implements OnInit, OnDestroy {
         private router: Router,
         private database: DatabaseService,
         private route: ActivatedRoute,
-        private dataService: DataService
+        private dataService: DataService,
+        private authService: AuthService,
     ) {
-
+        this.authService.getUserData();
     }
 
     ngOnInit() {
     }
 
     ionViewWillEnter(){
-        this.database.getDataFromStorage(this.database.access_token_table)
-            .then(response=>{
-                if(!response){
-                    this.router.navigate(['/login']);
-                }
-            })
         this.loader.present('Loading...');
         setTimeout(()=>{
             this.loader.dismiss();
         },1000);
+        this.database.getDataFromStorage(this.database.access_token_table)
+            .then(response=>{
+                if(!response){
+                    this.router.navigate(['/login']);
+                }else {
+                    this.route.queryParams.subscribe(params => {
+                        if (!params.hasOwnProperty('catId')){
+                            this.catId = 0;
+                        }else{
+                            this.catId = params.catId;
+                        }
+                        this.fetchProducts();
+                    })
+                }
+            })
 
-        this.route.queryParams.subscribe(params => {
-            if (!params.hasOwnProperty('catId')){
-                this.catId = 0;
-            }else{
-                this.catId = params.catId;
-            }
-            this.fetchProducts();
-        })
     }
 
     fetchProducts(infiniteScroll?){
@@ -71,9 +75,11 @@ export class ProductsPage implements OnInit, OnDestroy {
 
                     if (this.page === 1 && responseData.hasOwnProperty('meta')) {
                         this.last_page = responseData.meta.last_page;
-                        this.products = responseData.data;
+                        this.productsData = responseData.data;
+                        this.products = this.productsData;
                     } else {
-                        this.products.push(...responseData.data);
+                        this.productsData.push(...responseData.data);
+                        this.products = this.productsData;
                     }
                     if (infiniteScroll) {
                         infiniteScroll.target.complete();
@@ -100,19 +106,19 @@ export class ProductsPage implements OnInit, OnDestroy {
 
     searchData(isLoad?){
         if (this.searchValue == "" && !isLoad){
-            this.products = this.data.products.filter(product=> {
+            this.products = this.productsData.filter(product=> {
                 if(this.catWishProduct(product)){
                     return  product;
                 }
             })
         }else if(isLoad){
-            this.products = this.products.filter(product=> {
+            this.products = this.productsData.filter(product=> {
                 if(this.catWishProduct(product)){
                     return  product;
                 }
             })
         }else{
-            this.products = this.products.filter(product=> {
+            this.products = this.productsData.filter(product=> {
                 if (product.product_name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1 && this.catWishProduct(product)){
                     return product;
                 }

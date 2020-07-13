@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ConfigService} from "../providers/config/config.service";
-import {DatabaseService} from "../providers/database/database.service";
-import {BehaviorSubject, Subject} from "rxjs";
+import {Subject} from "rxjs";
+import {tap} from "rxjs/operators";
 
 @Injectable({
     providedIn: 'root'
 })
 export class DataService {
     private categoryList: string[];
-    private productList: string[];
+    private productList: string[]=[];
     public categoryListSubj: Subject<string[]> = new Subject<string[]>();
-    public productListSubj: Subject<string[]> = new Subject<string[]>();
-    public userInfo = [];
     constructor(
         private http: HttpClient,
         private config: ConfigService,
-        private database: DatabaseService
     ) {
-
+        this.config.getAccessToken();
     }
 
     fetchCategoryList() {
-        this.http.get<any>(this.config.API_URL + 'api/category-list')
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: this.config.access_token,
+        });
+        this.http.get<any>(this.config.API_URL + 'api/category-list', {headers})
             .subscribe(response=>{
                 if (response.code === this.config.HTTP_OK){
                     this.categoryList = response.data;
@@ -32,10 +33,30 @@ export class DataService {
     }
 
     fetchCategoryProduct(catId=0, url:string=""){
-        return this.http.get<any>(this.config.API_URL + `api/category/${catId}/products?${url}`);
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: this.config.access_token,
+        });
+        return this.http.get<any>(this.config.API_URL + `api/category/${catId}/products?${url}`, {headers})
+            .pipe(tap(response=>{
+                if(response.code === this.config.HTTP_OK){
+                    this.productList.push(...response.data);
+                }
+            }));
+    }
+    fetchCustomerList(){
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: this.config.access_token,
+        });
+        return this.http.get<any>(this.config.API_URL + `api/customer-list`, {headers});
     }
 
-    fetchCustomerList(){
-        return this.http.get<any>(this.config.API_URL + `api/customer-list`);
+    storeSale(data){
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: this.config.access_token,
+        });
+        return this.http.post<any>(this.config.API_URL+`api/sale-store`, data, {headers});
     }
 }

@@ -11,15 +11,28 @@ import {BehaviorSubject} from "rxjs";
 export class AuthService {
 
     public authUserBehavior = new BehaviorSubject<number>(0);
-    public userInfo = [];
+    public userInfo:any="";
     constructor(
         private http: HttpClient,
         private config: ConfigService,
         private database: DatabaseService
     ) {
-
+        this.database.getDataFromStorage(this.database.USER_TABLE)
+            .then(userInfo=> {
+                if (userInfo){
+                    this.userInfo = userInfo;
+                }
+            })
     }
 
+    getUserData(){
+        this.database.getDataFromStorage(this.database.USER_TABLE)
+            .then(userInfo=> {
+                if (userInfo){
+                    this.userInfo = userInfo;
+                }
+            })
+    }
     login(formData: { username: string, password: string }) {
         const credentials = {
             grant_type: 'password',
@@ -33,9 +46,11 @@ export class AuthService {
             .pipe(tap(response => {
                 if (response.code == this.config.HTTP_OK && response.data.hasOwnProperty('access_token')) {
                     const accessToken = response.data.token_type + ' ' + response.data.access_token;
+                    this.config.access_token = accessToken;
                     this.database.setDataToStorage(this.database.access_token_table, accessToken);
                     this.database.setDataToStorage(this.database.TOKEN_TABLE, response.data.token_id);
                     this.database.setDataToStorage(this.database.USER_TABLE, response.data.user);
+                    this.userInfo = response.data.user;
                     this.authUserBehavior.next(1);
                 }
             }));
@@ -54,6 +69,8 @@ export class AuthService {
                     this.database.setDataToStorage(this.database.CART_TABLE, []);
                     this.database.setDataToStorage(this.database.TOKEN_TABLE, "");
                     this.database.setDataToStorage(this.database.access_token_table, "");
+                    this.userInfo = "";
+                    this.config.access_token = "";
                     this.authUserBehavior.next(0);
                 }
             }));

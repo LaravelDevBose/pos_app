@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DemoDataService} from "../../providers/demo-data/demo-data.service";
 import {DataService} from "../../services/data.service";
 import {Subscription} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-categories',
@@ -16,10 +17,15 @@ export class CategoriesPage implements OnInit, OnDestroy {
     constructor(
         public data: DemoDataService,
         private dataService: DataService,
+        private route: Router
     ) { }
 
     ngOnInit() {
-        this.dataService.fetchCategoryList();
+
+        setTimeout(()=>{
+            this.dataService.fetchCategoryList();
+        },1500);
+
         this.categorySub = this.dataService.categoryListSubj
             .subscribe(dataList=>{
                 this.categoryList = dataList;
@@ -35,5 +41,10 @@ export class CategoriesPage implements OnInit, OnDestroy {
     }
     ngOnDestroy() {
         this.categorySub.unsubscribe();
+    }
+
+    selectCategory(id: any) {
+        this.expandCatId = 0;
+        this.route.navigate(['/sr/products'],{queryParams: {catId: id}});
     }
 }
