@@ -1,13 +1,9 @@
 ion-header{
     ion-toolbar{
         ion-item{
-            ion-title{
-                font-size: 17px;
-                text-decoration: underline;
-                padding-inline-start: 5px;
-            }
+            --padding-start: 5px;
             ion-icon{
-                margin-inline-end: 5px;
+                margin-inline-end: 10px;
                 color: #FFFFFF;
             }
             div{
@@ -76,13 +72,15 @@ ion-content{
                                             text-align: right;
                                             margin: 0;
                                             font-weight: bold;
-                                            color: var(--theam-color);
+
 
                                             &:nth-child(1){
-                                                font-size: 16px;
+                                                font-size: 14px;
+                                                color: var(--theam-color);
                                             }
                                             &:nth-child(2){
-                                                font-size: 14px;
+                                                font-size: 12px;
+                                                color: var(--theam-2-color);
                                             }
                                             small{
                                                 font-size: 10px;

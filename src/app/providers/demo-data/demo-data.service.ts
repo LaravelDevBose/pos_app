@@ -1,21 +1,10 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
-import {DatabaseService} from "../database/database.service";
-export interface CartInfo {
-    product_id: number;
-    product_name: string;
-    price: number;
-    box_qty: number;
-    qty: number;
-    sub_total: number;
-}
-
 @Injectable({
     providedIn: 'root'
 })
 export class DemoDataService {
 
-    public cartTotal = new BehaviorSubject(0);
+
     constructor() {
 
     }
@@ -60,6 +49,4 @@ export class DemoDataService {
         {"id":"12","shop_id":"0","name":"Customer Service","username":"11111111111","email":null,"phone":"11111111111","password":"$2y$10$SAVEJvDq7rGHGCIqTSvazuxCBSRd9\/qJQhy2efWy\/2n6JToppJ2re","avatar_id":null,"role":"11","status":"1","email_verified_at":null,"remember_token":null,"created_at":"2020-06-16 07:39:46","updated_at":"2020-06-16 07:39:46","otp_code":null,"nid_image":null,"licence_image":null,"user_balance":"0.00","user_address":null,"licence_image_last":null,"nid_image_last":null,"location_tracker_id":"1"},
         {"id":"13","shop_id":"0","name":"sdfsdfsdf","username":"42342342343","email":null,"phone":"3424243434324","password":"$2y$10$Yv.N2fL7RGhOyKs4D88TrOxZevZCC9alvIP3LGJW2X\/4UuavHbBNG","avatar_id":null,"role":"10","status":"1","email_verified_at":null,"remember_token":null,"created_at":"2020-06-16 07:48:52","updated_at":"2020-06-16 07:48:52","otp_code":null,"nid_image":null,"licence_image":null,"user_balance":"0.00","user_address":null,"licence_image_last":null,"nid_image_last":null,"location_tracker_id":null}
     ];
-
-    public
 }

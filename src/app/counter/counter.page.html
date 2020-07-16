@@ -16,10 +16,10 @@
 </ion-header>
 
 <ion-content>
-    <ion-grid *ngIf="cartItems.length > 0">
+    <ion-grid>
         <ion-row>
             <ion-col size="12" class="ion-no-padding">
-                <ion-list >
+                <ion-list *ngIf="isLoading && cartItems.length > 0" >
                     <ion-item *ngFor="let item of cartItems">
                         <ion-row *ngIf="item == 1">
                             <ion-col size="1.5">
@@ -32,35 +32,49 @@
                                 <ion-skeleton-text animated></ion-skeleton-text>
                             </ion-col>
                         </ion-row>
-                        <ion-row *ngIf="item !== 1">
+                    </ion-item>
+                </ion-list>
+                <ion-list  *ngIf="!isLoading && cartDetail">
+                    <ion-item *ngFor="let item of cartItems">
+                        <ion-row *ngIf="item !== 1" (click)="openModal(item.product)">
                             <ion-col size="1.5">
                                 <b>{{ item.qty }}X</b>
                             </ion-col>
                             <ion-col size="7.5">
                                 <h6>{{ item.product_name }}</h6>
-                                <!--<small>Point: 100, weight: 5kg</small>-->
+                                <small>Size: {{ item.size}}</small>
                             </ion-col>
                             <ion-col size="3">
                                 <p>{{ item.sub_total }} <small>Tk</small></p>
+                                <p>{{ item.point }} <small>points</small></p>
                             </ion-col>
                         </ion-row>
                     </ion-item>
                 </ion-list>
             </ion-col>
             <ion-col size="12" class="ion-no-padding summery">
-                <ion-list lines="none" class="ion-no-padding">
+                <ion-list class="ion-no-padding">
                     <ion-item *ngIf="isLoading">
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                    </ion-item>
+                    <ion-item *ngIf="isLoading">
+                        <ion-skeleton-text animated ></ion-skeleton-text>
                         <ion-skeleton-text animated ></ion-skeleton-text>
                     </ion-item>
 
-                    <ion-item *ngIf="!isLoading && cartItems">
-                        <ion-label>Subtotal</ion-label>
-                        <ion-label class="ion-text-right">{{ cartTotal }}<small>tk</small></ion-label>
+                    <ion-item *ngIf="!isLoading && cartDetail">
+                        <ion-label>Total</ion-label>
+                        <ion-label class="ion-text-right">{{ cartDetail.total_amount }} <small>tk</small></ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="!isLoading && cartDetail">
+                        <ion-label>Total Point</ion-label>
+                        <ion-label class="ion-text-right">{{ cartDetail.total_point }} <small>points</small></ion-label>
                     </ion-item>
                 </ion-list>
             </ion-col>
         </ion-row>
-        <ion-row class="btn-group">
+        <ion-row class="btn-group" *ngIf="!isLoading && cartDetail">
             <ion-col size="6">
                 <ion-button
                         expand="block"
@@ -84,7 +98,7 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-grid *ngIf="cartItems.length <= 0">
+    <ion-grid *ngIf="!isLoading && !cartDetail">
         <ion-row>
             <ion-col size="12" class="ion-text-center">
                 <h1>No item found in Cart.</h1>

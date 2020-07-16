@@ -15,15 +15,16 @@
                 </ion-col>
                 <ion-col size="6">
                     <ion-skeleton-text *ngIf="isLoading"></ion-skeleton-text>
-                    <ion-label *ngIf="!isLoading && product.minimum_order" >Minimum Order: {{ product.minimum_order }} pcs</ion-label>
+                    <ion-label *ngIf="!isLoading && cartInfo.sub_total" >SubTotal: {{ cartInfo.sub_total.toFixed(2) }} <small>tk</small></ion-label>
                 </ion-col>
+
                 <ion-col size="6">
                     <ion-skeleton-text *ngIf="isLoading"></ion-skeleton-text>
                     <ion-label *ngIf="!isLoading && product.shop_price" >Price: {{ product.shop_price}} <small>tk</small></ion-label>
                 </ion-col>
                 <ion-col size="6">
                     <ion-skeleton-text *ngIf="isLoading"></ion-skeleton-text>
-                    <ion-label *ngIf="!isLoading && cartInfo.sub_total" >SubTotal: {{ cartInfo.sub_total.toFixed(2) }} <small>tk</small></ion-label>
+                    <ion-label *ngIf="!isLoading && cartInfo.point" >Point: {{ cartInfo.point.toFixed(2) }}</ion-label>
                 </ion-col>
             </ion-row>
             <ion-row>

@@ -8,9 +8,10 @@ import {AlertService} from "../providers/alert/alert.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DatabaseService} from "../providers/database/database.service";
 import {DataService} from "../services/data.service";
-import {Subscription} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 import {ConfigService} from "../providers/config/config.service";
 import {AuthService} from "../services/auth.service";
+import {CartService} from "../services/cart.service";
 
 @Component({
     selector: 'app-products',
@@ -27,6 +28,8 @@ export class ProductsPage implements OnInit, OnDestroy {
     private per_page = 12;
     private last_page = 1;
     private productSub: Subscription;
+    public cartTotalAmount: BehaviorSubject<number>;
+    public cartTotalPoint: BehaviorSubject<number>;
     constructor(
         public config: ConfigService,
         private modalCtrl: ModalController,
@@ -37,11 +40,14 @@ export class ProductsPage implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private dataService: DataService,
         private authService: AuthService,
+        private cartService: CartService,
     ) {
         this.authService.getUserData();
+        this.cartService.updateCartTotalInfo();
     }
 
     ngOnInit() {
+        this.fetchProducts();
     }
 
     ionViewWillEnter(){
@@ -65,6 +71,8 @@ export class ProductsPage implements OnInit, OnDestroy {
                 }
             })
 
+        this.cartTotalAmount = this.cartService.getCartTotalAmount();
+        this.cartTotalPoint = this.cartService.getCartTotalPoint();
     }
 
     fetchProducts(infiniteScroll?){
@@ -72,7 +80,6 @@ export class ProductsPage implements OnInit, OnDestroy {
         this.productSub = this.dataService.fetchCategoryProduct(this.catId, url)
             .subscribe((responseData) => {
                 if (responseData.code === this.config.HTTP_OK) {
-
                     if (this.page === 1 && responseData.hasOwnProperty('meta')) {
                         this.last_page = responseData.meta.last_page;
                         this.productsData = responseData.data;

@@ -1,0 +1,78 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-item *ngIf="!isLoading && orderInfo" lines="none">
+            <ion-icon name="close" mode="md" slot="start" (click)="closeModal()"></ion-icon>
+            <div>
+                <h3>{{ orderInfo.customer.name }}</h3>
+                <ion-label>{{ orderInfo.customer.username}}</ion-label>
+            </div>
+        </ion-item>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content >
+    <ion-grid >
+        <ion-row *ngIf="isLoading && !orderInfo">
+            <ion-col size="12" class="ion-no-padding">
+                <ion-list [@listAnimation]="items.length">
+                    <ion-item *ngFor="let item of items">
+                        <ion-row *ngIf="item == 1">
+                            <ion-col size="1.5">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                            <ion-col size="7.5">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                            <ion-col size="3">
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </ion-col>
+                        </ion-row>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="orderInfo">
+            <ion-col size="12" class="ion-no-padding" *ngIf="orderInfo.items.length > 0">
+                <ion-list [@listAnimation]="orderInfo.items.length">
+                    <ion-item *ngFor="let item of orderInfo.items">
+                        <ion-row *ngIf="item !== 1">
+                            <ion-col size="1.5">
+                                <b>{{ item.qty }}X</b>
+                            </ion-col>
+                            <ion-col size="7.5">
+                                <h6>{{ item.product.name }}</h6>
+                                <small>Size: {{ item.product.size}}</small>
+                            </ion-col>
+                            <ion-col size="3">
+                                <p>{{ item.total }} <small>Tk</small></p>
+                                <p>{{ item.point }} <small>points</small></p>
+                            </ion-col>
+                        </ion-row>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+            <ion-col size="12" class="ion-no-padding summery">
+                <ion-list class="ion-no-padding">
+                    <ion-item *ngIf="isLoading">
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                    </ion-item>
+                    <ion-item *ngIf="isLoading">
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                        <ion-skeleton-text animated ></ion-skeleton-text>
+                    </ion-item>
+
+                    <ion-item *ngIf="!isLoading && orderInfo">
+                        <ion-label>Total</ion-label>
+                        <ion-label class="ion-text-right">{{ orderInfo.total }} <small>tk</small></ion-label>
+                    </ion-item>
+                    <ion-item *ngIf="!isLoading && orderInfo">
+                        <ion-label>Total Point</ion-label>
+                        <ion-label class="ion-text-right">{{ orderInfo.point }} <small>points</small></ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>

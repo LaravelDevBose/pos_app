@@ -2,6 +2,18 @@ ion-header{
     ion-toolbar{
         ion-item{
             --padding-start: 0;
+            ion-label{
+                margin-inline-start: 0;
+                text-align: right;
+                color: #fff;
+                font-weight: bold;
+                p{
+                    display: block;
+                    width: 100%;
+                    color: #FFFFFF;
+                    font-size: 12px;
+                }
+            }
         }
         ion-searchbar{
             padding-inline-start: .8rem;

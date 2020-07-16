@@ -1,0 +1,128 @@
+ion-header{
+    ion-toolbar{
+        &:last-child{
+            --background: #fff!important;
+            --padding-end: 7px;
+            ion-row{
+                margin: 0;
+                padding: 0;
+
+                ion-col{
+                    ion-item{
+                        --padding-start: 0;
+                        --inner-padding-end: 0;
+                        --min-height: 20px;
+                        --background: #fff!important;
+                        ion-label{
+                            font-size: 20px;
+                            font-weight: bold;
+                            color: var(--theam-2-color);
+                        }
+                        ion-datetime{
+                            --color: var(--theam-color);
+                        }
+                    }
+                    div{
+                        h3{
+                            margin: 3px 0;
+                            font-weight: bold;
+                            font-size: 16px;
+                            color: var(--theam-color);
+                            b{
+                                float: right;
+                            }
+                        }
+                        p{
+                            font-weight: bold;
+                            font-size: 13px;
+                            color: var(--theam-2-color);
+                            margin: 3px 0;
+                            b{
+                                float: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+ion-content{
+    ion-grid{
+        ion-row {
+            ion-col {
+
+                ion-list {
+                    padding: 0;
+                    margin-bottom: .5rem;
+
+                    ion-item {
+                        --padding-start: 0;
+                        --inner-padding-end: 0px;
+
+                        ion-row {
+                            width: 100%;
+
+                            ion-col {
+                                padding: 0 3px;
+
+                                ion-skeleton-text {
+                                    height: 20px;
+                                    width: 100%;
+                                    margin: 3px;
+                                }
+
+                                &:nth-child(1) {
+                                    b {
+                                        position: relative;
+                                        margin-right: 5px;
+                                        font-size: 12px;
+                                        margin-left: 5px;
+                                        color: var(--theam-color);
+                                    }
+
+                                }
+
+                                &:nth-child(2) {
+                                    h6 {
+                                        margin: 0;
+                                        font-size: 15px;
+                                        font-weight: 600;
+                                    }
+
+                                    small {
+                                        font-size: 11px;
+                                        font-weight: 500;
+                                    }
+                                }
+
+                                &:nth-child(3) {
+                                    padding-right: 5px;
+
+                                    p{
+                                        text-align: right;
+                                        margin: 0;
+                                        font-weight: bold;
+
+                                        &:nth-child(1){
+                                            font-size: 14px;
+                                        }
+                                        &:nth-child(2){
+                                            font-size: 12px;
+                                        }
+                                        small{
+                                            font-size: 10px;
+                                            font-weight: 600;
+                                        }
+                                    };
+                                ;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

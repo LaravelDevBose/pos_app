@@ -41,6 +41,13 @@ ion-menu{
                         }
                     }
                 }
+                &:last-child{
+                    padding-inline-start: 5px;
+                    ion-icon{
+                        margin-inline-end: 5px;
+                        color: var(--theam-color);
+                    }
+                }
             }
         }
     }

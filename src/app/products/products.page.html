@@ -3,6 +3,10 @@
         <ion-item>
             <ion-menu-button slot="start"></ion-menu-button>
             <ion-title>Products List</ion-title>
+            <ion-label slot="end">
+                {{ cartTotalAmount| async }} <span>tk</span>
+                <p>{{ cartTotalPoint | async }} <small>points</small></p>
+            </ion-label>
         </ion-item>
     </ion-toolbar>
     <ion-toolbar>

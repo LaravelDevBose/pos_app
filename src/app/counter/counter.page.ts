@@ -10,6 +10,7 @@ import {DataService} from "../services/data.service";
 import {AuthService} from "../services/auth.service";
 import {ConfigService} from "../providers/config/config.service";
 import {ProductCartModalComponent} from "../components/product-cart-modal-component/product-cart-modal-component.component";
+import {CartDetails, CartService} from "../services/cart.service";
 
 @Component({
     selector: 'app-counter',
@@ -19,9 +20,8 @@ import {ProductCartModalComponent} from "../components/product-cart-modal-compon
 export class CounterPage implements OnInit, OnDestroy {
     public selectedCustomer:any = ""
     public cartItems: any[] = [1,1,1,1];
+    public cartDetail: any;
     public isLoading = true;
-    public cartTotal = 0;
-    public cartQty = 0;
     private saleSub: Subscription;
     private hitSale = false;
     constructor(
@@ -34,12 +34,20 @@ export class CounterPage implements OnInit, OnDestroy {
         private dataService: DataService,
         private authService: AuthService,
         private config: ConfigService,
-    ) { }
+        private cartService: CartService,
+    ) {
+        this.cartService.updateCartTotalInfo();
+    }
 
     ngOnInit() {
         this.authService.getUserData();
+        this.cartService.cartDetail.subscribe(cartDetail=>{
+            this.cartDetail = cartDetail;
+            this.cartItems = this.cartDetail.cartItems;
+        });
     }
     ionViewWillEnter(){
+
         this.loader.present('Loading...');
         this.database.getDataFromStorage(this.database.access_token_table)
             .then(response=>{
@@ -51,23 +59,9 @@ export class CounterPage implements OnInit, OnDestroy {
                     this.route.navigate(['/login']);
                 }
             })
-        this.database.getDataFromStorage(this.database.CART_TABLE)
-            .then(cartItems=> {
-                setTimeout(()=>{
-                    this.cartItems = cartItems;
-                    this.isLoading = false;
-                    this.total();
-                },1200);
-
-            })
-
-    }
-    total(){
-        this.cartTotal = 0;
-        for (let i=0; i< this.cartItems.length; i++){
-            this.cartTotal+=  +this.cartItems[i].sub_total;
-            this.cartQty += +this.cartItems[i].qty;
-        }
+        setTimeout(()=>{
+            this.isLoading = false;
+        },1200);
     }
     async onSelectCustomer(){
         const modal = await this.modalCtrl.create({
@@ -79,7 +73,6 @@ export class CounterPage implements OnInit, OnDestroy {
         })
         modal.onWillDismiss()
             .then(data=> {
-                console.log(data['data']);
                 this.selectedCustomer = data['data'];
             });
         return await modal.present();
@@ -91,15 +84,21 @@ export class CounterPage implements OnInit, OnDestroy {
         const reqData = {
             'customer_id': this.selectedCustomer.id,
             'carts': this.cartItems,
-            'total': this.cartTotal,
-            'qty': this.cartQty,
+            'total': this.cartDetail.total_amount,
+            'qty': this.cartDetail.total_qty,
+            'point': this.cartDetail.total_point,
             'sr_id': this.authService.userInfo.id,
         }
         this.saleSub = this.dataService.storeSale(reqData)
             .subscribe(({status, code, message})=> {
                 this.loader.dismiss();
                 if (code == this.config.HTTP_OK){
-                    this.database.setDataToStorage(this.database.CART_TABLE, []);
+                    this.cartService.clearCartData()
+                        .then((response)=>{
+                            this.cartItems.length = 0;
+                            this.selectedCustomer = '';
+                            this.cartDetail = "";
+                        });
                     this.alert.presentWithRoute(status, message, '/sr/products');
                 }else if(code === this.config.HTTP_BAD_REQUEST || code === this.config.HTTP_NOT_ACCEPTABLE){
                     this.alert.present(status, message);
@@ -138,11 +137,23 @@ export class CounterPage implements OnInit, OnDestroy {
 
     clearCartData(){
         this.loader.present('Clearing Cart Items.')
-        this.database.setDataToStorage(this.database.CART_TABLE, []);
-        setTimeout(()=>{
-            this.loader.dismiss();
-            this.cartItems = [];
-        }, 1200);
+        this.cartService.clearCartData()
+            .then((response)=>{
+                this.loader.dismiss();
+                this.cartItems.length = 0;
+                this.selectedCustomer = '';
+            });
+    }
+
+    async openModal(product: any){
+        const productModal = await this.modalCtrl.create({
+            component: ProductCartModalComponent,
+            cssClass: 'product-cart',
+            componentProps: {'product': product},
+            animated: true,
+            mode: "ios",
+        })
+        return await productModal.present();
     }
 
     ngOnDestroy() {

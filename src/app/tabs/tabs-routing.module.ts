@@ -24,6 +24,10 @@ const routes: Routes = [
                 loadChildren: () => import('../profile/profile.module').then( m => m.ProfilePageModule)
             },
             {
+                path: 'order-list',
+                loadChildren: () => import('../order-list/order-list.module').then( m => m.OrderListPageModule)
+            },
+            {
                 path: '',
                 redirectTo: 'sr/home',
                 pathMatch: 'full'

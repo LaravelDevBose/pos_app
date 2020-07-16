@@ -1,9 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {ToastService} from "../../providers/toast/toast.service";
-import {CartInfo} from "../../providers/demo-data/demo-data.service";
-import {DatabaseService} from "../../providers/database/database.service";
-import {LoaderService} from "../../providers/loader/loader.service";
+import {CartInfo, CartService} from "../../services/cart.service";
 
 
 @Component({
@@ -21,18 +19,21 @@ export class ProductCartModalComponent implements OnInit {
         box_qty: 0,
         qty: 0,
         sub_total: 0,
+        size: '',
+        point: 0,
+        product: '',
     };
     constructor(
         private modalCtrl: ModalController,
         private toastCtrl: ToastService,
-        private database: DatabaseService,
+        private cartService: CartService,
     ) { }
 
     ngOnInit() {}
 
     ionViewWillEnter(){
         let cartProduct:CartInfo;
-         this.database.getCartProduct(this.product.product_id)
+         this.cartService.getCartProduct(this.product.id)
              .then(cartProductInfo=>{
                  cartProduct = cartProductInfo;
              })
@@ -48,7 +49,7 @@ export class ProductCartModalComponent implements OnInit {
                 this.cartInfo.qty = this.product.minimum_order;
                 this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
             }
-
+            this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
 
         }, 1500);
     }
@@ -58,27 +59,36 @@ export class ProductCartModalComponent implements OnInit {
     }
     updateBoxQty(){
         if(this.cartInfo.box_qty <= 0){
-            this.cartInfo.box_qty = (this.product.minimum_order/ this.product.box_qty);
-            this.cartInfo.qty = this.product.minimum_order;
-            this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
-            this.toastCtrl.presentToast('Qty Can\'t equal or less then 0', 'warning-toast');
+            this.productQtyValid();
         }else{
-            this.cartInfo.qty = this.cartInfo.box_qty * this.product.box_qty;
-            this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
+            this.productQtyUpdate(1);
         }
 
     }
     updateQty(){
         if(this.cartInfo.qty <= 0){
-            this.cartInfo.box_qty = (this.product.minimum_order/ this.product.box_qty);
-            this.cartInfo.qty = this.product.minimum_order;
-            this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
-            this.toastCtrl.presentToast('Qty Can\'t equal or less then 0', 'warning-toast');
+            this.productQtyValid();
         }else{
-            this.cartInfo.box_qty = this.cartInfo.qty / this.product.box_qty;
-            this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
+            this.productQtyUpdate(2);
         }
 
+    }
+
+    productQtyValid(){
+        this.cartInfo.box_qty = (this.product.minimum_order/ this.product.box_qty);
+        this.cartInfo.qty = this.product.minimum_order;
+        this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
+        this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
+        this.toastCtrl.presentToast('Qty Can\'t equal or less then 0', 'warning-toast');
+    }
+    productQtyUpdate(type){
+        if(type === 1){
+            this.cartInfo.qty = this.cartInfo.box_qty * this.product.box_qty;
+        }else{
+            this.cartInfo.box_qty = this.cartInfo.qty / this.product.box_qty;
+        }
+        this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
+        this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
     }
 
     decreaseBoxQty() {
@@ -103,8 +113,9 @@ export class ProductCartModalComponent implements OnInit {
         this.cartInfo.product_name = this.product.name;
         this.cartInfo.price = this.product.shop_price;
         this.cartInfo.sub_total = this.product.shop_price * this.cartInfo.qty;
-
-        this.database.addToCart(this.cartInfo)
+        this.cartInfo.size = this.product.size;
+        this.cartInfo.product = this.product;
+        this.cartService.addToCart(this.cartInfo)
             .then(cartData=>{
                 /*this.loader.dismiss();*/
                 this.modalCtrl.dismiss();

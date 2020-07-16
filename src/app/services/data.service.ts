@@ -19,11 +19,7 @@ export class DataService {
     }
 
     fetchCategoryList() {
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: this.config.access_token,
-        });
-        this.http.get<any>(this.config.API_URL + 'api/category-list', {headers})
+        this.http.get<any>(this.config.API_URL + 'api/category-list')
             .subscribe(response=>{
                 if (response.code === this.config.HTTP_OK){
                     this.categoryList = response.data;
@@ -33,11 +29,7 @@ export class DataService {
     }
 
     fetchCategoryProduct(catId=0, url:string=""){
-        const headers = new HttpHeaders({
-            'Content-Type': 'application/json',
-            Authorization: this.config.access_token,
-        });
-        return this.http.get<any>(this.config.API_URL + `api/category/${catId}/products?${url}`, {headers})
+        return this.http.get<any>(this.config.API_URL + `api/category/${catId}/products?${url}`)
             .pipe(tap(response=>{
                 if(response.code === this.config.HTTP_OK){
                     this.productList.push(...response.data);
@@ -58,5 +50,13 @@ export class DataService {
             Authorization: this.config.access_token,
         });
         return this.http.post<any>(this.config.API_URL+`api/sale-store`, data, {headers});
+    }
+
+    fetchOrderList(srId, url:string=''){
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: this.config.access_token,
+        });
+        return this.http.get<any>(this.config.API_URL+`api/sr/${srId}/order-list?${url}`, {headers});
     }
 }

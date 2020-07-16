@@ -1,13 +1,13 @@
 <ion-tabs>
 
     <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home">
+        <!--<ion-tab-button tab="home">
             <ion-icon ios="home-outline" md="home"></ion-icon>
             <ion-label>Home</ion-label>
-        </ion-tab-button>
+        </ion-tab-button>-->
 
         <ion-tab-button tab="products">
-            <ion-icon ios="list-outline" md="list-sharp"></ion-icon>
+            <ion-icon ios="grid-outline" md="grid"></ion-icon>
             <ion-label>Products</ion-label>
         </ion-tab-button>
 
@@ -20,9 +20,9 @@
             <ion-icon name="person"></ion-icon>
             <ion-label>Profile</ion-label>
         </ion-tab-button>-->
-        <ion-tab-button (click)="logout()">
-            <ion-icon name="log-out-outline"></ion-icon>
-            <ion-label>Logout</ion-label>
+        <ion-tab-button tab="order-list">
+            <ion-icon ios="list-outline" md="list-sharp"></ion-icon>
+            <ion-label>Order list</ion-label>
         </ion-tab-button>
     </ion-tab-bar>
 
