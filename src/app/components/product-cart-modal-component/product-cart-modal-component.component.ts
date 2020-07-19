@@ -45,11 +45,11 @@ export class ProductCartModalComponent implements OnInit {
                 this.cartInfo.qty = cartProduct.qty
                 this.cartInfo.sub_total = cartProduct.sub_total;
             }else{
-                this.cartInfo.box_qty = (this.product.minimum_order/ this.product.box_qty);
+                this.cartInfo.box_qty = +(this.product.minimum_order/ this.product.box_qty).toFixed(2);
                 this.cartInfo.qty = this.product.minimum_order;
-                this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
+                this.cartInfo.sub_total = +(this.cartInfo.qty * this.product.shop_price).toFixed(2);
             }
-            this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
+            this.cartInfo.point = +((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
 
         }, 1500);
     }
@@ -75,20 +75,20 @@ export class ProductCartModalComponent implements OnInit {
     }
 
     productQtyValid(){
-        this.cartInfo.box_qty = (this.product.minimum_order/ this.product.box_qty);
+        this.cartInfo.box_qty = +(this.product.minimum_order/ this.product.box_qty).toFixed(2);
         this.cartInfo.qty = this.product.minimum_order;
-        this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
-        this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
+        this.cartInfo.sub_total = +(this.cartInfo.qty * this.product.shop_price).toFixed(2);
+        this.cartInfo.point = +(((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty).toFixed(2);
         this.toastCtrl.presentToast('Qty Can\'t equal or less then 0', 'warning-toast');
     }
     productQtyUpdate(type){
         if(type === 1){
-            this.cartInfo.qty = this.cartInfo.box_qty * this.product.box_qty;
+            this.cartInfo.qty = +(this.cartInfo.box_qty * this.product.box_qty).toFixed(0);
         }else{
-            this.cartInfo.box_qty = this.cartInfo.qty / this.product.box_qty;
+            this.cartInfo.box_qty = +(this.cartInfo.qty / this.product.box_qty).toFixed(2);
         }
-        this.cartInfo.sub_total = (this.cartInfo.qty * this.product.shop_price);
-        this.cartInfo.point = ((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty;
+        this.cartInfo.sub_total = +(this.cartInfo.qty * this.product.shop_price).toFixed(2);
+        this.cartInfo.point = +(((this.product.shop_price - this.product.wholesale_price)/ .5) * this.cartInfo.qty).toFixed(2);
     }
 
     decreaseBoxQty() {
@@ -119,7 +119,7 @@ export class ProductCartModalComponent implements OnInit {
             .then(cartData=>{
                 /*this.loader.dismiss();*/
                 this.modalCtrl.dismiss();
-                this.toastCtrl.presentToast('Product Add To Cart.', 'success-toast', 1500)
+                this.toastCtrl.presentToast('Product Add To Cart.', 'success-toast','top', 1500)
             });
     }
 }

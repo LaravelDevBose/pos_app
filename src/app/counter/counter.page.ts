@@ -142,6 +142,7 @@ export class CounterPage implements OnInit, OnDestroy {
                 this.loader.dismiss();
                 this.cartItems.length = 0;
                 this.selectedCustomer = '';
+                this.cartDetail = "";
             });
     }
 

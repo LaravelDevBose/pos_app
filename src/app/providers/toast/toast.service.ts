@@ -8,14 +8,14 @@ export class ToastService {
 
     constructor(public toastController: ToastController) {}
 
-    async presentToast(message:string, cssClass='my-toast', duration= 2000, position = "bottom") {
+    async presentToast(message:string, cssClass='my-toast', position = 'bottom', duration= 2000, ) {
         const toast = await this.toastController.create({
             message: message,
             duration: duration,
             animated: true,
             mode: "ios",
             cssClass: cssClass,
-            position: "bottom",
+            position: (position == "top")? "top" : "bottom",
         });
         return  await toast.present();
     }

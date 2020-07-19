@@ -7,11 +7,11 @@ export interface CartInfo {
     product_id: number;
     product_name: string;
     price: number;
-    box_qty: number;
-    qty: number;
-    sub_total: number;
+    box_qty: any;
+    qty: any;
+    sub_total: any;
     size: string;
-    point: number;
+    point: any;
     product: any;
 }
 export interface CartDetails {
@@ -123,7 +123,7 @@ export class CartService {
                     for (let item of cartDetail.cartItems){
                         totalAmount += item.sub_total;
                         totalPoint += item.point;
-                        totalQty += totalQty;
+                        totalQty += item.qty;
                     }
                     cartDetail.total_amount = totalAmount;
                     cartDetail.total_point = totalPoint;

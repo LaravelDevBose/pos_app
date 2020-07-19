@@ -116,7 +116,12 @@ ion-content{
                                             font-weight: 600;
                                         }
                                     };
-                                ;
+                                    ion-badge{
+                                        margin-top: 5px;
+                                        float: right;
+                                        margin-bottom: 5px;
+                                        font-size: 10px;
+                                    }
                                 }
                             }
                         }

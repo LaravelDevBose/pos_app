@@ -57,6 +57,8 @@
                             <ion-col size="3">
                                 <p>{{ item.total }} <small>Tk</small></p>
                                 <p>{{ item.point }} <small>points</small></p>
+                                <ion-badge color="success" *ngIf="item.status == 1">Delivered</ion-badge>
+                                <ion-badge color="primary" *ngIf="item.status == 2">Pending</ion-badge>
                             </ion-col>
                         </ion-row>
                     </ion-item>
