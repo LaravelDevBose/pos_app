@@ -12,6 +12,7 @@ import {BehaviorSubject, Subscription} from "rxjs";
 import {ConfigService} from "../providers/config/config.service";
 import {AuthService} from "../services/auth.service";
 import {CartService} from "../services/cart.service";
+import {ToastService} from "../providers/toast/toast.service";
 
 @Component({
     selector: 'app-products',
@@ -41,6 +42,7 @@ export class ProductsPage implements OnInit, OnDestroy {
         private dataService: DataService,
         private authService: AuthService,
         private cartService: CartService,
+        private toast: ToastService,
     ) {
         this.authService.getUserData();
         this.cartService.updateCartTotalInfo();
@@ -113,23 +115,19 @@ export class ProductsPage implements OnInit, OnDestroy {
 
     searchData(isLoad?){
         if (this.searchValue == "" && !isLoad){
-            this.products = this.productsData.filter(product=> {
-                if(this.catWishProduct(product)){
-                    return  product;
-                }
-            })
-        }else if(isLoad){
-            this.products = this.productsData.filter(product=> {
-                if(this.catWishProduct(product)){
-                    return  product;
-                }
-            })
+            this.products = this.productsData;
         }else{
-            this.products = this.productsData.filter(product=> {
-                if (product.product_name.toLowerCase().indexOf(this.searchValue.toLowerCase()) > -1 && this.catWishProduct(product)){
-                    return product;
-                }
-            });
+            this.dataService.searchProducts(this.searchValue)
+                .subscribe(({code,data}) => {
+                    if(code === this.config.HTTP_OK){
+                        this.products = data;
+                    }else {
+                        this.products.length = 0;
+                    }
+                }, (error)=>{
+                    this.toast.presentToast('Something wrong. Try again.', 'warning-toast');
+                })
+
         }
 
     }

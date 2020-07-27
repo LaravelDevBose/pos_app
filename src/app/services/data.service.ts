@@ -59,4 +59,8 @@ export class DataService {
         });
         return this.http.get<any>(this.config.API_URL+`api/sr/${srId}/order-list?${url}`, {headers});
     }
+
+    searchProducts(searchData){
+        return this.http.get<any>(this.config.API_URL+`api/search/products?search=${searchData}`);
+    }
 }

@@ -37,12 +37,14 @@
                 <ion-list  *ngIf="!isLoading && cartDetail">
                     <ion-item *ngFor="let item of cartItems">
                         <ion-row *ngIf="item !== 1" (click)="openModal(item.product)">
-                            <ion-col size="1.5">
-                                <b>{{ item.qty }}X</b>
-                            </ion-col>
-                            <ion-col size="7.5">
+
+                            <ion-col size="6">
                                 <h6>{{ item.product_name }}</h6>
                                 <small>Size: {{ item.size}}</small>
+                            </ion-col>
+                            <ion-col size="3">
+                                <b>Qty: <span>{{ item.qty }}</span></b>
+                                <p>Price: <span>{{ item.price }} <small>tk</small></span></p>
                             </ion-col>
                             <ion-col size="3">
                                 <p>{{ item.sub_total }} <small>Tk</small></p>

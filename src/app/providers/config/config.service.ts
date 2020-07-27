@@ -6,10 +6,10 @@ import {DatabaseService} from "../database/database.service";
 })
 export class ConfigService {
 
-    public API_URL = 'http://paikari.pc/';
-    // public API_URL = 'http://paikarimarketbd.w3codemaster.com/';
-    public CLIENT_SECRET = 'WLYjq5w0BO6H36j7HjARak12kagNj9C61P2L1k3Q';
-    // public CLIENT_SECRET = 'Jvx0bCD0Dw47zpoRhqAUw9xQ9tNQzpHlLY70umQM';
+    // public API_URL = 'http://paikari.pc/';
+    public API_URL = 'http://paikarimarketbd.w3codemaster.com/';
+    // public CLIENT_SECRET = 'WLYjq5w0BO6H36j7HjARak12kagNj9C61P2L1k3Q';
+    public CLIENT_SECRET = 'Jvx0bCD0Dw47zpoRhqAUw9xQ9tNQzpHlLY70umQM';
 
 
     //================================================//

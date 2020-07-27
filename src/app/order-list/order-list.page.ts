@@ -67,7 +67,7 @@ export class OrderListPage implements OnInit {
     }
 
     fetchOrderList(infiniteScroll?){
-        let url = `sd_date=${this.reqData}&page=${this.page}&per_page=${this.per_page}`;
+        let url = `sr_sale_date=${this.reqData}&page=${this.page}&per_page=${this.per_page}`;
         this.orderSub = this.dataService.fetchOrderList(this.authService.userInfo.id, url)
             .subscribe((responseData) => {
                 if (this.isLoaderActive){
@@ -115,7 +115,7 @@ export class OrderListPage implements OnInit {
             setTimeout(()=>{
                 this.loader.dismiss();
                 this.isLoaderActive = false;
-            })
+            }, 1200)
         }
         if (this.page > this.last_page) {
             infiniteScroll.target.disabled = true;
@@ -153,7 +153,7 @@ export class OrderListPage implements OnInit {
             setTimeout(()=>{
                 this.loader.dismiss();
                 this.isLoaderActive = false;
-            })
+            },1200)
         }
         this.reqData = this.datePipe.transform(this.date, 'dd-M-y');
         this.page = 1;

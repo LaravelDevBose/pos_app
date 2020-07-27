@@ -48,18 +48,24 @@ ion-content{
                                         width: 100%;
                                     }
 
-                                    &:nth-child(1){
+                                    &:nth-child(2){
+                                        text-align: left;
                                         b{
-                                            position: relative;
-                                            top: 30%;
-                                            margin-right: 5px;
-                                            font-size: 14px;
-                                            margin-left: 5px;
-                                            color: var(--theam-color);
+                                            font-size: 12px;
+                                            span{
+                                                color: var(--theam-color);
+                                            }
+                                        }
+                                        p{
+                                            margin: 0;
+                                            font-size: 12px;
+                                            span{
+                                                color: var(--theam-color);
+                                            }
                                         }
 
                                     }
-                                    &:nth-child(2){
+                                    &:nth-child(1){
                                         h6{
                                             margin: 0;
                                             font-size: 15px;
